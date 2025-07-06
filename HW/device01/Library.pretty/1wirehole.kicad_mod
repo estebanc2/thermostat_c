@@ -1,0 +1,24 @@
+(footprint "1wirehole" (version 20221018) (generator pcbnew)
+  (layer "F.Cu")
+  (descr "Single banana socket, footprint - 6mm drill")
+  (tags "banana socket")
+  (attr smd)
+  (fp_text reference "REF**" (at 0 -3.5306) (layer "Cmts.User") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp 16a55048-2b8e-4af8-94d0-9edbe1ef1c62)
+  )
+  (fp_text value "v2" (at 0.0508 3.6576) (layer "Cmts.User") hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    (tstamp b23a4f75-11a4-446e-91b3-1eab6ddef049)
+  )
+  (fp_text user "${REFERENCE}" (at 0 0) (layer "Cmts.User") hide
+      (effects (font (size 0.8 0.8) (thickness 0.12)))
+    (tstamp 89ef44f6-6cc5-4b79-b268-b727dd80782f)
+  )
+  (pad "1" thru_hole rect (at 0 0) (size 3 5) (drill 2) (layers "*.Cu" "*.Mask") (tstamp dfe09695-bd1c-4c86-a176-9b287f7f31d5))
+  (model "${KISYS3DMOD}/Connector.3dshapes/Banana_Jack_1Pin.wrl"
+    (offset (xyz 0 0 0))
+    (scale (xyz 2 2 2))
+    (rotate (xyz 0 0 0))
+  )
+)

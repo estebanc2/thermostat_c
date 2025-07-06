@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/Users/estebanc2/esp/ESP8266_RTOS_SDK/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__ESP_FILE__",
+                "CONFIG_FREERTOS_HZ",
+                "CONFIG_ESP8266_WIFI_RX_BUFFER_NUM",
+                "CONFIG_ESP8266_WIFI_RX_PKT_NUM",
+                "CONFIG_ESP8266_WIFI_LEFT_CONTINUOUS_RX_BUFFER_NUM",
+                "CONFIG_ESP8266_WIFI_TX_PKT_NUM"
+            ],
+            "cStandard": "c99",
+            "cppStandard": "c++98",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

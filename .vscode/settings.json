@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "socket.h": "c",
+        "locale": "c",
+        "stdlib.h": "c",
+    },
+    "C_Cpp.errorSquiggles": "disabled",
+    "idf.adapterTargetName": "esp8266",
+    "idf.port": "/dev/cu.usbmodem112101",
+    "cmake.ignoreCMakeListsMissing": true
+}
