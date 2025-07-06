@@ -30,8 +30,8 @@
 #define UNUSED_4_OUTPUT 16
 #define OUTPUT_PIN_SELECT ((1ULL << SWITCH_OUTPUT) | (1ULL << LED_OUTPUT) | (1ULL << UNUSED_1_OUTPUT) | (1ULL << UNUSED_2_OUTPUT) | (1ULL << UNUSED_3_OUTPUT) | (1ULL << UNUSED_4_OUTPUT))
 //histeresis
-#define TEMP_LOW_X_10 39.0
-#define TEMP_HIGHT_X_10 42.0
+#define TEMP_LOW_X_10 390
+#define TEMP_HIGHT_X_10 410
 
 static const char *TAG = "MAIN";
 

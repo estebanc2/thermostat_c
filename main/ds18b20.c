@@ -64,7 +64,7 @@ esp_err_t ds18b20_read(const uint8_t *device, int16_t *temp_x_10){
         *temp_x_10 = -970;
         return ESP_ERR_INVALID_CRC; 
     }
-    *temp_x_10 = (10 * (rx.b[1] << 8) | rx.b[0]) / 16;
+    *temp_x_10 = (10 * (int16_t)((rx.b[1] << 8) | rx.b[0]))/ 16;
     return ESP_OK;
 }
 
