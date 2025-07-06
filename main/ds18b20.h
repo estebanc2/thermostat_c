@@ -1,7 +1,5 @@
 #pragma once
 #include "one_wire.h"
-#include "yogurtera.h"
-
 
 // ROM commands
 #define READ_ROM 0x33
