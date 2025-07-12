@@ -28,4 +28,3 @@ The HW folder in this repository contains documents needed to order boards from 
 ![alt_text](images/image2.png "image_tooltip")
 
 ![alt_text](images/image4.png "image_tooltip")
-
