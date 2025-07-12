@@ -1,60 +1,52 @@
+
 #pragma once
-#include "one_wire.h"
 
-// ROM commands
-#define READ_ROM 0x33
-#define MATCH_ROM 0x55
-#define SEARCH_ROM 0xF0
-#define ALARM_SEARCH 0xEC
-#define SKIP_ROM 0xCC
-//Function commands
-#define CONVERT_T 0x44
-#define READ_SCRATCH 0xBE
-#define WRITE_SCRATCH 0x4E
-#define COPY_SCRATCH 0x48
-#define READ_E2 0xB8
-#define READ_PWR 0xB4
-//config. resolution
-#define RES_9  0x1F
-#define RES_10 0x3F
-#define RES_11 0x5F
-#define RES_12 0x7F 
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "driver/gpio.h"
+#include "esp_err.h"
+#include "stddef.h"
+#include "esp_log.h"
 
-/*
-* MASTER TX
-*  _____
-        |        _______________________ 
-        |________|
-*          t0                   t1
-*
-*/
+typedef struct {
+	uint8_t b[9];
+} rx_t;
 
-/*
-* 9 bytes from scratchpad means:
-* -----------------
-* |byte|Scratchpad|ROMcode
-* |  0 | temp LSB |CRC
-* |  1 | temp MSB |code MSB
-* |  2 | TH       |code 
-* |  3 | TL       |code 
-* |  4 | config   |code 
-* |  5 | reserv 1 |code 
-* |  6 | reserv 2 |code LSB
-* |  7 | reserv 3 |Family code
-* |  8 | CRC      |
-*/
-
-/*
-  * RECONTRAGUARDA CON ESTO!!
-  * @brief  CPU do while loop for some time.
-  *         In FreeRTOS task, please call FreeRTOS apis.
-  *
-  * @param  uint32_t us : Delay time in us.
-  *
-  * @return None
-  *
- void ets_delay_us(uint32_t us);
+/**
+ * @brief set gpio for the 1 wire bus
+ *
+ * @param[in] gpio number
+ *
+ * @return
+ * 	- ESP_OK
+ * 	- ESP_ERR_INVALID_ARG
  */
+esp_err_t set_gpio (uint8_t);
 
+/**
+ * @brief get temperature in °C x 10 for all ds18b20 devices in the bus
+ *
+ * @param[in] array of N ds18b20 rom addresses
+ *
+ * @param[out] array of N temperatures in °C x 10. -800 means not sensor response and -900 means a CRC check fails. 
+ *
+ * @return
+ * 	- ESP_OK
+ * 	- ESP_ERR_NOT_FOUND
+ */
+esp_err_t get_temperature (const uint64_t *, size_t, int16_t *);
 
-esp_err_t ds18b20_read(const uint8_t *, int16_t *);
+/**
+ * @brief discover rom address
+ *
+ * @param[in] gpio number
+ *
+ * @param[out] ds18b20 rom addresses
+ *
+ * @return
+ * 	- ESP_OK
+ * 	- ESP_ERR_INVALID_ARG
+ *  - ESP_ERR_NOT_FOUND
+*/
+esp_err_t get_rom(uint8_t, const uint64_t *);
