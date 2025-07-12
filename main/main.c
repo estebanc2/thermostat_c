@@ -1,29 +1,9 @@
-/*
-    SWITCH_CONTROL_C - An app to manage electric switches from WiFi
 
-    Copyright (C) 2023  Esteban Castro  ecastro@miratucuadra.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
-#include "esp_log.h"
 #include "ds18b20.h"
 
 // GPIO assigment
 #define SWITCH_OUTPUT 4
 #define LED_OUTPUT 2
-
 #define UNUSED_1_OUTPUT 5
 #define UNUSED_2_OUTPUT 13
 #define UNUSED_3_OUTPUT 14
@@ -35,6 +15,11 @@
 
 static const char *TAG = "MAIN";
 
+static uint64_t sonda[] = {
+
+};
+static size_t sonda_size = sizeof(sonda) / sizeof(sonda[0]);
+
 static void temp_check_task(void *arg){
     gpio_config_t io_conf;
     io_conf.intr_type = GPIO_INTR_DISABLE;    // disable interrupt
@@ -43,18 +28,23 @@ static void temp_check_task(void *arg){
     io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;                 // disable pull-down mode
     io_conf.pull_up_en = GPIO_PULLUP_DISABLE;                   // disable pull-up mode
     gpio_config(&io_conf); 
-    io_conf.mode = GPIO_MODE_INPUT;
-    io_conf.pin_bit_mask = (1ULL << ONE_WIRE_GPIO);
-    gpio_config(&io_conf); 
+    if (sonda_size == 0) sonda_size = 1;
+    set_gpio(12);
+    int16_t temp[sonda_size];
     while (1){
-        int16_t temp_x_10; // podria pedir: ds18b20_temp _x_10
-        ds18b20_read( NULL, &temp_x_10 );
-        ESP_LOGI(TAG,"temperatura = %d", temp_x_10);
-        if(temp_x_10 < TEMP_LOW_X_10){
+        if( get_temperature (sonda, sonda_size, temp) == ESP_OK){
+            for (uint8_t i = 0; i<(sonda_size); i++) {
+                ESP_LOGI(TAG,"current sensor %d temperature = %.1f", i + 1, (float)(temp[i])/10.0f);
+            }
+        } else {    
+            ESP_LOGW(TAG,"no DS18B20 detected");
+        }
+        ESP_LOGI(TAG,"temperatura = %d", temp[0]);
+        if(temp[0] < TEMP_LOW_X_10){
             gpio_set_level(SWITCH_OUTPUT, 1); // se prende
             gpio_set_level(LED_OUTPUT, 0); // se prende
         }
-        else if (temp_x_10 > TEMP_HIGHT_X_10){
+        else if (temp[0] > TEMP_HIGHT_X_10){
             gpio_set_level(SWITCH_OUTPUT, 0); //se apaga
             gpio_set_level(LED_OUTPUT, 1); // se apaga
         }
