@@ -16,7 +16,7 @@
 static const char *TAG = "MAIN";
 
 static uint64_t sonda[] = {
-
+    0
 };
 static size_t sonda_size = sizeof(sonda) / sizeof(sonda[0]);
 
@@ -28,18 +28,16 @@ static void temp_check_task(void *arg){
     io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;                 // disable pull-down mode
     io_conf.pull_up_en = GPIO_PULLUP_DISABLE;                   // disable pull-up mode
     gpio_config(&io_conf); 
-    if (sonda_size == 0) sonda_size = 1;
     set_gpio(12);
     int16_t temp[sonda_size];
     while (1){
         if( get_temperature (sonda, sonda_size, temp) == ESP_OK){
             for (uint8_t i = 0; i<(sonda_size); i++) {
-                ESP_LOGI(TAG,"current sensor %d temperature = %.1f", i + 1, (float)(temp[i])/10.0f);
+                ESP_LOGI(TAG,"current sensor %d temperature x 10 = %d", i + 1, temp[i]);
             }
         } else {    
             ESP_LOGW(TAG,"no DS18B20 detected");
         }
-        ESP_LOGI(TAG,"temperatura = %d", temp[0]);
         if(temp[0] < TEMP_LOW_X_10){
             gpio_set_level(SWITCH_OUTPUT, 1); // se prende
             gpio_set_level(LED_OUTPUT, 0); // se prende

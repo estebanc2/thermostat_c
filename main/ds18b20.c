@@ -156,8 +156,7 @@ esp_err_t get_temperature(const uint64_t *sonda, size_t sondas, int16_t *temp){
         if (initialize() != ESP_OK){
             if (temp) temp[i] = -800; //ESP_ERR_NOT_FOUND; 
         } else {
-            printf("sonda[0] = %llu \n", sonda[0]);
-            if (0){//sonda[0] != 0) { 
+            if (sonda[0] != 0) { 
                 send_1_byte(MATCH_ROM);
                 uint64_t pos = 0;
                 for (uint8_t k = 0; k < 64; k++){
